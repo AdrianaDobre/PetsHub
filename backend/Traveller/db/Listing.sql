@@ -1,7 +1,7 @@
 ﻿USE [Petshub]
 GO
 
-/****** Object:  Table [dbo].[Listing]    Script Date: 04/11/2023 22:43:47 ******/
+/****** Object:  Table [dbo].[Listing]    Script Date: 06/11/2023 23:12:53 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -15,10 +15,12 @@ CREATE TABLE [dbo].[Listing](
 	[PetId] [smallint] NOT NULL,
 	[Description] [nvarchar](max) NOT NULL,
 	[Status] [bit] NULL,
-	[PetPhotoId] [uniqueidentifier] NOT NULL,
+	[PetPhotoId] [uniqueidentifier] NULL,
 	[Date] [datetime] NOT NULL,
 	[Price] [decimal](18, 2) NOT NULL,
 	[Time] [int] NOT NULL,
+	[Type] [bit] NOT NULL,
+	[Title] [nvarchar](100) NOT NULL,
  CONSTRAINT [PK_Listing] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
