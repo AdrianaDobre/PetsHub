@@ -1,0 +1,25 @@
+frontend/traveller/node_modules/
+frontend/traveller/.expo/
+frontend/traveller/dist/
+frontend/traveller/npm-debug.*
+frontend/traveller/*.jks
+frontend/traveller/*.p8
+frontend/traveller/*.p12
+frontend/traveller/*.key
+frontend/traveller/*.mobileprovision
+frontend/traveller/*.orig.*
+frontend/traveller/web-build/
+
+node_modules/
+**/node_modules
+
+frontend/traveller/node_modules
+
+# macOS
+frontend/traveller/.DS_Store
+
+# Temporary files created by Metro to check the health of the file watcher
+frontend/traveller/.metro-health-check*
+
+# secrets
+frontend/traveller/src/secrets.js
