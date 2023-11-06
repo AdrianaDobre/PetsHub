@@ -1,0 +1,1 @@
+export const isUserAuthenticatedSelector = (state) => state.tokenReducer.token;
