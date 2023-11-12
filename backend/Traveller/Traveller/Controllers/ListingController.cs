@@ -43,5 +43,14 @@ namespace PetsHub.Controllers
 
             return Ok();
         }
+
+        [HttpGet("listOffers")]
+        [Authorize]
+        public async Task<IActionResult> GetOffers()
+        {
+            var offers = await listingService.GetAllOffers();
+
+            return Ok(offers);
+        }
     }
 }

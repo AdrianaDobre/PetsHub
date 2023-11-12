@@ -13,6 +13,7 @@ using Common.ValidationExtensions;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
 using BusinessLogic.Implementation.ListingImp.Models;
+using AutoMapper;
 
 namespace BusinessLogic.Implementation.ListingImp
 {
@@ -45,6 +46,9 @@ namespace BusinessLogic.Implementation.ListingImp
             await UnitOfWork.SaveChangesAsync();
         }
 
-
+        public async Task<List<OfferModel>> GetAllOffers()
+        {
+            return await Mapper.ProjectTo<OfferModel>(UnitOfWork.Listings.Get().Include(l => l.CreatorUser).Include(l => l.Pet)).ToListAsync();
+        }
     }
 }
