@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using PetsHub.Code.Base;
 using PetsHub.Code.Utils;
+using BusinessLogic.Implementation.ListingImp;
 
 namespace PetsHub.Controllers
 {
@@ -94,6 +95,15 @@ namespace PetsHub.Controllers
                 );
 
             return token;
+        }
+
+        [HttpGet("listOfPetSittersOnTheMap")]
+        [Authorize]
+        public async Task<IActionResult> GetPetSitters()
+        {
+            var petSitters = await userService.GetAllPetSitters();
+
+            return Ok(petSitters);
         }
     }
 }

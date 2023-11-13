@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Backend.DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Implementation\UserAccount\Mappings\" />
+  </ItemGroup>
+
 </Project>
