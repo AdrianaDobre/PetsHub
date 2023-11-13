@@ -105,5 +105,14 @@ namespace PetsHub.Controllers
 
             return Ok(petSitters);
         }
+
+        [HttpGet("userProfileAuth")]
+        [Authorize]
+        public async Task<IActionResult> GetAuthUserProfile()
+        {
+            var userProfile = await userService.GetUserProfile();
+
+            return Ok(userProfile);
+        }
     }
 }

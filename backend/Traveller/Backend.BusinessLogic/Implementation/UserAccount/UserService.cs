@@ -13,6 +13,7 @@ using Common.ValidationExtensions;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
 using BusinessLogic.Implementation.ListingImp.Models;
+using BusinessLogic.Implementation.UserAccount.Mappings;
 
 namespace BusinessLogic.Implementation.UserAccount
 {
@@ -84,6 +85,11 @@ namespace BusinessLogic.Implementation.UserAccount
         public async Task<List<PetSitterDetailsModel>> GetAllPetSitters()
         {
             return await Mapper.ProjectTo<PetSitterDetailsModel>(UnitOfWork.Listings.Get().Include(l => l.CreatorUser).Where(l => l.Type == false)).ToListAsync();
+        }
+
+        public async Task<UserProfileModel> GetUserProfile()
+        {
+            return Mapper.Map<UserProfileModel>(await UnitOfWork.Users.Get().Include(l => l.Photo).Where(l => l.Id == CurrentUser.Id).FirstOrDefaultAsync());
         }
     }
 }
