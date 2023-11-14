@@ -91,5 +91,43 @@ namespace BusinessLogic.Implementation.UserAccount
         {
             return Mapper.Map<UserProfileModel>(await UnitOfWork.Users.Get().Include(l => l.Photo).Where(l => l.Id == CurrentUser.Id).FirstOrDefaultAsync());
         }
+
+        public async Task EditUserProfile(EditProfileModel editUserProfile)
+        {
+            if (editUserProfile == null || editUserProfile.Email == "" || editUserProfile.Email == null)
+            {
+                throw new Exception("Must enter an email");
+            }
+
+            if (string.IsNullOrEmpty(editUserProfile.Name))
+            {
+                throw new Exception("Name field is required");
+            }
+
+            if (!editUserProfile.Email.Contains("@"))
+            {
+                throw new Exception("Invalid email format");
+            }
+
+            var userInDb = await UnitOfWork.Users.Get().Where(l => l.Id == CurrentUser.Id).FirstOrDefaultAsync();
+
+            if (userInDb == null)
+            {
+                throw new Exception("The user doesn't exists");
+            }
+
+            userInDb.Name = editUserProfile.Name;
+            userInDb.Email = editUserProfile.Email;
+            userInDb.PhoneNumber = editUserProfile.PhoneNumber;
+            userInDb.LocationName = editUserProfile.LocationName;
+            userInDb.LocationLatitude = editUserProfile.LocationLatitude;
+            userInDb.LocationLongitude = editUserProfile.LocationLongitude;
+            userInDb.PhotoId = editUserProfile.PhotoId;
+
+            UnitOfWork.Users.Update(userInDb);
+
+            await UnitOfWork.SaveChangesAsync();
+        }
+
     }
 }

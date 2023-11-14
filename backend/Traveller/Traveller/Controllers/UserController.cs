@@ -114,5 +114,19 @@ namespace PetsHub.Controllers
 
             return Ok(userProfile);
         }
+
+        [HttpPut("editUserProfile")]
+        [Authorize]
+        public async Task<IActionResult> EditUserProfile([FromBody] EditProfileModel editUser)
+        {
+            if (editUser == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+
+            await userService.EditUserProfile(editUser);
+
+            return Ok();
+        }
     }
 }
