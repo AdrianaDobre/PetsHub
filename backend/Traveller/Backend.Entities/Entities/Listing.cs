@@ -11,7 +11,7 @@ namespace DataAccess.Entities
         public Guid? AcceptedUserId { get; set; }
         public short PetId { get; set; }
         public string Description { get; set; } = null!;
-        public bool? Status { get; set; }
+        public int Status { get; set; }
         public Guid? PetPhotoId { get; set; }
         public DateTime Date { get; set; }
         public decimal Price { get; set; }
@@ -22,6 +22,6 @@ namespace DataAccess.Entities
         public virtual User? AcceptedUser { get; set; }
         public virtual User CreatorUser { get; set; } = null!;
         public virtual Pet Pet { get; set; } = null!;
-        public virtual Photo PetPhoto { get; set; } = null!;
+        public virtual Photo? PetPhoto { get; set; }
     }
 }

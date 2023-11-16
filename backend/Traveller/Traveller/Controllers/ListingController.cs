@@ -52,5 +52,14 @@ namespace PetsHub.Controllers
 
             return Ok(offers);
         }
+
+        [HttpPut("sendRequestToHost/{listingId}")]
+        [Authorize]
+        public async Task<IActionResult> SendRequestToHost(Guid listingId)
+        {
+            await listingService.SendRequestToAHost(listingId);
+
+            return Ok();
+        }
     }
 }
