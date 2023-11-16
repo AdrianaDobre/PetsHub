@@ -77,5 +77,35 @@ namespace BusinessLogic.Implementation.ListingImp
 
             await UnitOfWork.SaveChangesAsync();
         }
+
+        public async Task AcceptOrRejectRequest(Guid listingId, bool accepted)
+        {
+            var listing = await UnitOfWork.Listings.Get().FirstOrDefaultAsync(l => l.Id == listingId);
+
+            if (listing == null)
+            {
+                throw new NotFoundErrorException();
+            }
+
+            if (listing.Status != (short)StatusTypes.RequestSent)
+            {
+                throw new Exception("The offer is no longer valid.");
+            }
+
+            listing.Status = accepted? (short)StatusTypes.RequestAccepted : (short)StatusTypes.RequestRejected;
+
+            UnitOfWork.Listings.Update(listing);
+
+            await UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<List<RequestModel>> GetAllRequestsReceived()
+        {
+            return await Mapper.ProjectTo<RequestModel>(UnitOfWork.Listings.Get()
+                .Include(l => l.AcceptedUser)
+                .Include(l => l.Pet)
+                .Where(l => l.Type == false && l.Status == (short)StatusTypes.RequestSent && l.CreatorUserId == CurrentUser.Id))
+                .ToListAsync();
+        }
     }
 }

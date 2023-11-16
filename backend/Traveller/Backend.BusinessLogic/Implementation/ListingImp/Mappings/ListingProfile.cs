@@ -17,6 +17,10 @@ namespace BusinessLogic.Implementation.ListingImp.Mappings
             CreateMap<Listing, OfferModel>()
                     .ForMember(a => a.CreatorName, a => a.MapFrom(s => s.CreatorUser.Name))
                     .ForMember(a => a.PetType, a => a.MapFrom(s => s.Pet.Pet1));
+
+            CreateMap<Listing, RequestModel>()
+                    .ForMember(a => a.AcceptedUserName, a => a.MapFrom(s => s.AcceptedUser.Name))
+                    .ForMember(a => a.PetType, a => a.MapFrom(s => s.Pet.Pet1));
         }
     }
 }

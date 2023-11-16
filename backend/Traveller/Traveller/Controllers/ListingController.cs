@@ -61,5 +61,23 @@ namespace PetsHub.Controllers
 
             return Ok();
         }
+
+        [HttpPut("acceptOrRejectRequest/{listingId}/{accepted}")]
+        [Authorize]
+        public async Task<IActionResult> AcceptOrRejectRequest(Guid listingId, bool accepted)
+        {
+            await listingService.AcceptOrRejectRequest(listingId, accepted);
+
+            return Ok();
+        }
+
+        [HttpGet("viewRequestsReceived")]
+        [Authorize]
+        public async Task<IActionResult> GetRequestsReceived()
+        {
+            var requests = await listingService.GetAllRequestsReceived();
+
+            return Ok(requests);
+        }
     }
 }
