@@ -79,7 +79,5 @@ namespace BusinessLogic.Implementation.UserAccount
                 return new CurrentUserDTO { IsAuthenticated = false };
             }
         }
-
-
     }
 }

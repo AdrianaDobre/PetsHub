@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.Base;
-using BusinessLogic.Implementation.UserAccount.Models;
 using Common.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -52,7 +51,7 @@ namespace BusinessLogic.Implementation.ListingImp
             return await Mapper.ProjectTo<OfferModel>(UnitOfWork.Listings.Get()
                 .Include(l => l.CreatorUser)
                 .Include(l => l.Pet)
-                .Where(l => l.Type == false && l.Status == (short)StatusTypes.Posted))
+                .Where(l => l.Type == false && l.Status == (short)StatusTypes.Posted && l.CreatorUserId != CurrentUser.Id && l.Date > DateTime.Today))
                 .ToListAsync();
         }
 
@@ -105,6 +104,26 @@ namespace BusinessLogic.Implementation.ListingImp
                 .Include(l => l.AcceptedUser)
                 .Include(l => l.Pet)
                 .Where(l => l.Type == false && l.Status == (short)StatusTypes.RequestSent && l.CreatorUserId == CurrentUser.Id))
+                .ToListAsync();
+        }
+
+        public async Task<List<PetWithOwnerModel>> GetHistoryOfPets()
+        {
+            return await Mapper.ProjectTo<PetWithOwnerModel>(UnitOfWork.Listings.Get()
+                .Include(l => l.AcceptedUser)
+                .Include(l => l.Pet)
+                .Include(l => l.PetPhoto)
+                .Where(l => l.Type == false && l.Status == (short)StatusTypes.RequestAccepted && l.CreatorUserId == CurrentUser.Id))
+                .ToListAsync();
+        }
+
+        public async Task<List<PetSitterWithPetModel>> GetHistoryOfPetSitters()
+        {
+            return await Mapper.ProjectTo<PetSitterWithPetModel>(UnitOfWork.Listings.Get()
+                .Include(l => l.CreatorUser)
+                .Include(l => l.Pet)
+                .Include(l => l.PetPhoto)
+                .Where(l => l.Type == false && l.Status == (short)StatusTypes.RequestAccepted && l.AcceptedUserId == CurrentUser.Id))
                 .ToListAsync();
         }
     }

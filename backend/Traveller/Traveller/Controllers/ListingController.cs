@@ -79,5 +79,23 @@ namespace PetsHub.Controllers
 
             return Ok(requests);
         }
+
+        [HttpGet("historyOfPets")]
+        [Authorize]
+        public async Task<IActionResult> GetHistoryOfPets()
+        {
+            var pets = await listingService.GetHistoryOfPets();
+
+            return Ok(pets);
+        }
+
+        [HttpGet("historyOfPetSitters")]
+        [Authorize]
+        public async Task<IActionResult> GetHistoryOfPetSitters()
+        {
+            var petSitters = await listingService.GetHistoryOfPetSitters();
+
+            return Ok(petSitters);
+        }
     }
 }
