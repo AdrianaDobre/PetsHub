@@ -4,6 +4,7 @@ using BusinessLogic.Implementation.UserAccount;
 using Common.DTOs;
 using System.Security.Claims;
 using PetsHub.Code.Base;
+using BusinessLogic.Implementation.ListingImp;
 
 namespace PetsHub.Code.ExtensionMethods
 {
@@ -21,6 +22,7 @@ namespace PetsHub.Code.ExtensionMethods
             services.AddScoped<ServiceDependencies>();
             services.AddScoped<BaseService>();
             services.AddScoped<UserService>();
+            services.AddScoped<ListingService>();
 
             return services;
         }

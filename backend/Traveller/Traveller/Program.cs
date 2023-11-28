@@ -53,7 +53,7 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
-//builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(BaseService).Assembly);
+builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(BaseService).Assembly);
 builder.Services.AddDbContext<PetsHubContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

@@ -1,4 +1,5 @@
-﻿using Common.DTOs;
+﻿using AutoMapper;
+using Common.DTOs;
 using DataAccess;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,14 @@ namespace BusinessLogic.Base
 {
     public class BaseService
     {
-        //protected readonly IMapper Mapper;
+        protected readonly IMapper Mapper;
         protected readonly UnitOfWork UnitOfWork;
         protected readonly CurrentUserDTO CurrentUser;
         public string AvatarFilePath = @"C:\Users\strat\source\repos\MontaniersBachelor\Frontend\public\PozeProiect";
 
         public BaseService(ServiceDependencies serviceDependencies)
         {
-            //Mapper = serviceDependencies.Mapper;
+            Mapper = serviceDependencies.Mapper;
             UnitOfWork = serviceDependencies.UnitOfWork;
             CurrentUser = serviceDependencies.CurrentUser;
         }
