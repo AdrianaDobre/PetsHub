@@ -129,5 +129,9 @@ namespace BusinessLogic.Implementation.UserAccount
             await UnitOfWork.SaveChangesAsync();
         }
 
+        public async Task<PetSitterProfileModel> GetPetSitterProfileById(Guid id)
+        {
+            return Mapper.Map<PetSitterProfileModel>(await UnitOfWork.Users.Get().Include(l => l.Photo).Where(l => l.Id == id).FirstOrDefaultAsync());
+        }
     }
 }

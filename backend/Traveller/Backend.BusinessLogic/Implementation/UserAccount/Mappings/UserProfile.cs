@@ -14,6 +14,9 @@ namespace BusinessLogic.Implementation.UserAccount.Mappings
         public UserProfile() {
             CreateMap<User, Models.UserProfileModel>()
                    .ForMember(a => a.PhotoPath, a => a.MapFrom(s => s.Photo!=null ? s.Photo.Path : null));
+
+            CreateMap<User, Models.PetSitterProfileModel>()
+                   .ForMember(a => a.PhotoPath, a => a.MapFrom(s => s.Photo != null ? s.Photo.Path : null));
         }
     }
 }

@@ -128,5 +128,14 @@ namespace PetsHub.Controllers
 
             return Ok();
         }
+
+        [HttpGet("petSitterProfile/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetPetSitterProfile([FromRoute] Guid id)
+        {
+            var userProfile = await userService.GetPetSitterProfileById(id);
+
+            return Ok(userProfile);
+        }
     }
 }
