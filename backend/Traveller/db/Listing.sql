@@ -14,7 +14,7 @@ CREATE TABLE [dbo].[Listing](
 	[AcceptedUserId] [uniqueidentifier] NULL,
 	[PetId] [smallint] NOT NULL,
 	[Description] [nvarchar](max) NOT NULL,
-	[Status] [bit] NULL,
+	[Status] INT NOT NULL,
 	[PetPhotoId] [uniqueidentifier] NULL,
 	[Date] [datetime] NOT NULL,
 	[Price] [decimal](18, 2) NOT NULL,

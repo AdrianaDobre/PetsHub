@@ -52,5 +52,50 @@ namespace PetsHub.Controllers
 
             return Ok(offers);
         }
+
+        [HttpPut("sendRequestToHost/{listingId}")]
+        [Authorize]
+        public async Task<IActionResult> SendRequestToHost(Guid listingId)
+        {
+            await listingService.SendRequestToAHost(listingId);
+
+            return Ok();
+        }
+
+        [HttpPut("acceptOrRejectRequest/{listingId}/{accepted}")]
+        [Authorize]
+        public async Task<IActionResult> AcceptOrRejectRequest(Guid listingId, bool accepted)
+        {
+            await listingService.AcceptOrRejectRequest(listingId, accepted);
+
+            return Ok();
+        }
+
+        [HttpGet("viewRequestsReceived")]
+        [Authorize]
+        public async Task<IActionResult> GetRequestsReceived()
+        {
+            var requests = await listingService.GetAllRequestsReceived();
+
+            return Ok(requests);
+        }
+
+        [HttpGet("historyOfPets")]
+        [Authorize]
+        public async Task<IActionResult> GetHistoryOfPets()
+        {
+            var pets = await listingService.GetHistoryOfPets();
+
+            return Ok(pets);
+        }
+
+        [HttpGet("historyOfPetSitters")]
+        [Authorize]
+        public async Task<IActionResult> GetHistoryOfPetSitters()
+        {
+            var petSitters = await listingService.GetHistoryOfPetSitters();
+
+            return Ok(petSitters);
+        }
     }
 }

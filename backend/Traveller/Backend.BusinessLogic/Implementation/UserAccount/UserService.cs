@@ -133,5 +133,6 @@ namespace BusinessLogic.Implementation.UserAccount
         {
             return Mapper.Map<PetSitterProfileModel>(await UnitOfWork.Users.Get().Include(l => l.Photo).Where(l => l.Id == id).FirstOrDefaultAsync());
         }
+        }
     }
 }
