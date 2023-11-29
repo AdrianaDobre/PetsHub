@@ -137,5 +137,19 @@ namespace PetsHub.Controllers
 
             return Ok(userProfile);
         }
+
+        [HttpPut("addLocationOnUserProfile")]
+        [Authorize]
+        public async Task<IActionResult> addLocationOnUserProfile([FromBody] AddLocationForProfileModel locationModel)
+        {
+            if (locationModel == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+
+            await userService.AddLocationOnUserProfile(locationModel);
+
+            return Ok();
+        }
     }
 }

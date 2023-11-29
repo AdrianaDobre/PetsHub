@@ -12,8 +12,7 @@ using Common.DTOs;
 using Common.ValidationExtensions;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
-using BusinessLogic.Implementation.ListingImp.Models;
-using BusinessLogic.Implementation.UserAccount.Mappings;
+using AutoMapper;
 
 namespace BusinessLogic.Implementation.UserAccount
 {
@@ -133,6 +132,23 @@ namespace BusinessLogic.Implementation.UserAccount
         {
             return Mapper.Map<PetSitterProfileModel>(await UnitOfWork.Users.Get().Include(l => l.Photo).Where(l => l.Id == id).FirstOrDefaultAsync());
         }
+
+        public async Task AddLocationOnUserProfile(AddLocationForProfileModel locationModel)
+        {
+            var userInDb = await UnitOfWork.Users.Get().Where(l => l.Id == CurrentUser.Id).FirstOrDefaultAsync();
+
+            if (userInDb == null)
+            {
+                throw new Exception("The user doesn't exists");
+            }
+
+            userInDb.LocationName = locationModel.LocationName;
+            userInDb.LocationLatitude = locationModel.LocationLatitude;
+            userInDb.LocationLongitude = locationModel.LocationLongitude;
+
+            UnitOfWork.Users.Update(userInDb);
+
+            await UnitOfWork.SaveChangesAsync();
         }
     }
 }
