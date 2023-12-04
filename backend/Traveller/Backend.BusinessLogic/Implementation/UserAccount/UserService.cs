@@ -12,6 +12,7 @@ using Common.DTOs;
 using Common.ValidationExtensions;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
+using AutoMapper;
 
 namespace BusinessLogic.Implementation.UserAccount
 {
@@ -78,6 +79,76 @@ namespace BusinessLogic.Implementation.UserAccount
             {
                 return new CurrentUserDTO { IsAuthenticated = false };
             }
+        }
+
+        public async Task<List<PetSitterDetailsModel>> GetAllPetSitters()
+        {
+            return await Mapper.ProjectTo<PetSitterDetailsModel>(UnitOfWork.Listings.Get().Include(l => l.CreatorUser).Where(l => l.Type == false)).ToListAsync();
+        }
+
+        public async Task<UserProfileModel> GetUserProfile()
+        {
+            return Mapper.Map<UserProfileModel>(await UnitOfWork.Users.Get().Include(l => l.Photo).Where(l => l.Id == CurrentUser.Id).FirstOrDefaultAsync());
+        }
+
+        public async Task EditUserProfile(EditProfileModel editUserProfile)
+        {
+            if (editUserProfile == null || editUserProfile.Email == "" || editUserProfile.Email == null)
+            {
+                throw new Exception("Must enter an email");
+            }
+
+            if (string.IsNullOrEmpty(editUserProfile.Name))
+            {
+                throw new Exception("Name field is required");
+            }
+
+            if (!editUserProfile.Email.Contains("@"))
+            {
+                throw new Exception("Invalid email format");
+            }
+
+            var userInDb = await UnitOfWork.Users.Get().Where(l => l.Id == CurrentUser.Id).FirstOrDefaultAsync();
+
+            if (userInDb == null)
+            {
+                throw new Exception("The user doesn't exists");
+            }
+
+            userInDb.Name = editUserProfile.Name;
+            userInDb.Email = editUserProfile.Email;
+            userInDb.PhoneNumber = editUserProfile.PhoneNumber;
+            userInDb.LocationName = editUserProfile.LocationName;
+            userInDb.LocationLatitude = editUserProfile.LocationLatitude;
+            userInDb.LocationLongitude = editUserProfile.LocationLongitude;
+            userInDb.PhotoId = editUserProfile.PhotoId;
+
+            UnitOfWork.Users.Update(userInDb);
+
+            await UnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<PetSitterProfileModel> GetPetSitterProfileById(Guid id)
+        {
+            return Mapper.Map<PetSitterProfileModel>(await UnitOfWork.Users.Get().Include(l => l.Photo).Where(l => l.Id == id).FirstOrDefaultAsync());
+        }
+
+        public async Task AddLocationOnUserProfile(AddLocationForProfileModel locationModel)
+        {
+            var userInDb = await UnitOfWork.Users.Get().Where(l => l.Id == CurrentUser.Id).FirstOrDefaultAsync();
+
+            if (userInDb == null)
+            {
+                throw new Exception("The user doesn't exists");
+            }
+
+            userInDb.LocationName = locationModel.LocationName;
+            userInDb.LocationLatitude = locationModel.LocationLatitude;
+            userInDb.LocationLongitude = locationModel.LocationLongitude;
+
+            UnitOfWork.Users.Update(userInDb);
+
+            await UnitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using PetsHub.Code.Base;
 using PetsHub.Code.Utils;
+using BusinessLogic.Implementation.ListingImp;
 
 namespace PetsHub.Controllers
 {
@@ -94,6 +95,61 @@ namespace PetsHub.Controllers
                 );
 
             return token;
+        }
+
+        [HttpGet("listOfPetSittersOnTheMap")]
+        [Authorize]
+        public async Task<IActionResult> GetPetSitters()
+        {
+            var petSitters = await userService.GetAllPetSitters();
+
+            return Ok(petSitters);
+        }
+
+        [HttpGet("userProfileAuth")]
+        [Authorize]
+        public async Task<IActionResult> GetAuthUserProfile()
+        {
+            var userProfile = await userService.GetUserProfile();
+
+            return Ok(userProfile);
+        }
+
+        [HttpPut("editUserProfile")]
+        [Authorize]
+        public async Task<IActionResult> EditUserProfile([FromBody] EditProfileModel editUser)
+        {
+            if (editUser == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+
+            await userService.EditUserProfile(editUser);
+
+            return Ok();
+        }
+
+        [HttpGet("petSitterProfile/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetPetSitterProfile([FromRoute] Guid id)
+        {
+            var userProfile = await userService.GetPetSitterProfileById(id);
+
+            return Ok(userProfile);
+        }
+
+        [HttpPut("addLocationOnUserProfile")]
+        [Authorize]
+        public async Task<IActionResult> addLocationOnUserProfile([FromBody] AddLocationForProfileModel locationModel)
+        {
+            if (locationModel == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+
+            await userService.AddLocationOnUserProfile(locationModel);
+
+            return Ok();
         }
     }
 }

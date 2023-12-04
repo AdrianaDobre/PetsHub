@@ -16,7 +16,7 @@ namespace DataAccess.Entities
         public DateTime Date { get; set; }
         public decimal Price { get; set; }
         public int Time { get; set; }
-        public bool Type { get; set; } // false = host
+        public bool Type { get; set; } // false = host; true = owner
         public string Title { get; set; } = null!;
 
         public virtual User? AcceptedUser { get; set; }
