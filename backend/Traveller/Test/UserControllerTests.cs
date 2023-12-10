@@ -1,5 +1,3 @@
-
-
 using AutoMapper;
 using BusinessLogic.Base;
 using BusinessLogic.Implementation.UserAccount;

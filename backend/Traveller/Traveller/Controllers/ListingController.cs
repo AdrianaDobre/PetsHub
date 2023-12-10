@@ -19,11 +19,11 @@ namespace PetsHub.Controllers
 
     public class ListingController : BaseController
     {
-        private readonly UserService userService;
-        private readonly ListingService listingService;
+        private readonly UserServiceInterface userService;
+        private readonly ListingServiceInterface listingService;
         private readonly IConfiguration _configuration;
 
-        public ListingController(ControllerDependencies dependencies, UserService userService, ListingService listingService, IConfiguration configuration) : base(dependencies)
+        public ListingController(ControllerDependencies dependencies, UserServiceInterface userService, ListingServiceInterface listingService, IConfiguration configuration) : base(dependencies)
         {
             this.userService = userService;
             this.listingService = listingService;
