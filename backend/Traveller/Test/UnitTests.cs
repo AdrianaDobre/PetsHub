@@ -4,19 +4,19 @@ using AutoMapper;
 using BusinessLogic.Base;
 using BusinessLogic.Implementation.UserAccount;
 using BusinessLogic.Implementation.UserAccount.Models;
+using Castle.Core.Configuration;
 using Common.DTOs;
 using DataAccess.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PetsHub.Code.Base;
 using PetsHub.Controllers;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Test
 {
     public class SignUpTests
     {
-        private readonly IConfiguration _mockConfiguration;
-
         [Fact]
         public async Task Register_WhenCalled_ReturnsOk()
         {
@@ -56,6 +56,8 @@ namespace Test
             //Arrange
             var mockCurrentUserDTO = new Mock<CurrentUserDTO>();
             var mockDependencies = new Mock<ControllerDependencies>(mockCurrentUserDTO.Object);
+            var mockConfiguration = new Mock<IConfiguration>();
+            mockConfiguration.Setup(x => x["JWT:Secret"]).Returns("JWTAuthenticationHIGHsecuredPasswordVVVp1OH7Xzyr"); // Set up the configuration behavior
             var mockClient = new Mock<HttpClient>();
             var mockMapper = new Mock<IMapper>();
             var mockContext = new Mock<PetsHubContext>();
@@ -70,13 +72,13 @@ namespace Test
                 Password = "test"
             };
 
-            var controller = new UserController(mockDependencies.Object, mockUserService.Object, _mockConfiguration, mockClient.Object);
+            var controller = new UserController(mockDependencies.Object, mockUserService.Object, mockConfiguration.Object, mockClient.Object);
             
             // Act
             var result = await controller.Login(model);
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<OkObjectResult>(result);
         }
     }
 }
