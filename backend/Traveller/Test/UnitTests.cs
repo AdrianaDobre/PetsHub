@@ -48,6 +48,8 @@ namespace Test
             // Assert
             Assert.IsType<OkObjectResult>(result);
         }
+
+        [Fact]
         public void Login_WhenCalled_ReturnsOk()
         {
             //Arrange
@@ -67,9 +69,14 @@ namespace Test
                 Email = "test@email.com",
                 Password = "test"
             };
+
+            var controller = new UserController(mockDependencies.Object, mockService.Object, mockConfiguration.Object, mockClient.Object);
+            
             // Act
+            var result = controller.Login(model);
 
             // Assert
+            Assert.IsType<OkObjectResult>(result);
         }
     }
 }
