@@ -17,7 +17,7 @@ namespace Test
     {
 
         [Fact]
-        public void Register_WhenCalled_ReturnsOk()
+        public async Task Register_WhenCalled_ReturnsOk()
         {
             //Arrange
             var mockCurrentUserDTO = new Mock<CurrentUserDTO>();
@@ -28,8 +28,8 @@ namespace Test
             var mockContext = new Mock<PetsHubContext>();
             var mockUnit = new Mock<UnitOfWork>(mockContext.Object);
             var mockServiceDependencies = new Mock<ServiceDependencies>(mockMapper.Object, mockUnit.Object, mockCurrentUserDTO.Object);
-            var mockService = new Mock<UserService>(mockServiceDependencies.Object);
-            mockService.Setup(x => x.RegisterNewUser(It.IsAny<RegisterModel>())).Returns(It.IsAny<Task>());
+            var mockUserService = new Mock<UserServiceInterface>();
+            mockUserService.Setup(x => x.RegisterNewUser(It.IsAny<RegisterModel>())).Returns(Task.CompletedTask);
 
             var model = new RegisterModel()
             {
@@ -40,13 +40,13 @@ namespace Test
                 ConfirmedPassword = "test"
             };
 
-            var controller = new UserController(mockDependencies.Object, mockService.Object, mockConfiguration.Object, mockClient.Object);
+            var controller = new UserController(mockDependencies.Object, mockUserService.Object, mockConfiguration.Object, mockClient.Object);
 
             // Act
-            var result = controller.Register(model);
+            var result = await controller.Register(model);
 
             // Assert
-            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<OkResult>(result);
         }
 
         [Fact]
