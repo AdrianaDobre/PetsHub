@@ -80,5 +80,30 @@ namespace Test
             // Assert
             Assert.IsType<OkObjectResult>(result);
         }
+
+        [Fact]
+        public async Task GetPetSitters_WhenCalled_ReturnsOk()
+        {
+            //Arrange
+            var mockCurrentUserDTO = new Mock<CurrentUserDTO>();
+            var mockDependencies = new Mock<ControllerDependencies>(mockCurrentUserDTO.Object);
+            var mockConfiguration = new Mock<IConfiguration>();
+            var mockClient = new Mock<HttpClient>();
+            var mockMapper = new Mock<IMapper>();
+            var mockContext = new Mock<PetsHubContext>();
+            var mockUnit = new Mock<UnitOfWork>(mockContext.Object);
+            var mockServiceDependencies = new Mock<ServiceDependencies>(mockMapper.Object, mockUnit.Object, mockCurrentUserDTO.Object);
+            var mockUserService = new Mock<UserServiceInterface>();
+
+            mockUserService.Setup(x => x.GetAllPetSitters().Returns(null)); #HERE
+
+            var controller = new UserController(mockDependencies.Object, mockUserService.Object, mockConfiguration.Object, mockClient.Object);
+
+            // Act
+            var result = await controller.GetPetSitters();
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
     }
 }
