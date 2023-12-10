@@ -15,6 +15,7 @@ namespace Test
 {
     public class SignUpTests
     {
+        private readonly IConfiguration _mockConfiguration;
 
         [Fact]
         public async Task Register_WhenCalled_ReturnsOk()
@@ -50,19 +51,18 @@ namespace Test
         }
 
         [Fact]
-        public void Login_WhenCalled_ReturnsOk()
+        public async Task Login_WhenCalled_ReturnsOk()
         {
             //Arrange
             var mockCurrentUserDTO = new Mock<CurrentUserDTO>();
             var mockDependencies = new Mock<ControllerDependencies>(mockCurrentUserDTO.Object);
-            var mockConfiguration = new Mock<IConfiguration>();
             var mockClient = new Mock<HttpClient>();
             var mockMapper = new Mock<IMapper>();
             var mockContext = new Mock<PetsHubContext>();
             var mockUnit = new Mock<UnitOfWork>(mockContext.Object);
             var mockServiceDependencies = new Mock<ServiceDependencies>(mockMapper.Object, mockUnit.Object, mockCurrentUserDTO.Object);
-            var mockService = new Mock<UserService>(mockServiceDependencies.Object);
-            mockService.Setup(x => x.Login(It.IsAny<LogInModel>())).Returns(It.IsAny<Task<CurrentUserDTO>>());
+            var mockUserService = new Mock<UserServiceInterface>();
+            mockUserService.Setup(x => x.Login(It.IsAny<LogInModel>())).ReturnsAsync(new CurrentUserDTO {Email = "test@email.com", PhoneNumber = "0777777777", Name = "test", Id = Guid.NewGuid(), IsAuthenticated = true});
 
             var model = new LogInModel()
             {
@@ -70,13 +70,13 @@ namespace Test
                 Password = "test"
             };
 
-            var controller = new UserController(mockDependencies.Object, mockService.Object, mockConfiguration.Object, mockClient.Object);
+            var controller = new UserController(mockDependencies.Object, mockUserService.Object, _mockConfiguration, mockClient.Object);
             
             // Act
-            var result = controller.Login(model);
+            var result = await controller.Login(model);
 
             // Assert
-            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<OkResult>(result);
         }
     }
 }
