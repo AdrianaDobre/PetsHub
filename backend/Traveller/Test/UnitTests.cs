@@ -95,7 +95,13 @@ namespace Test
             var mockServiceDependencies = new Mock<ServiceDependencies>(mockMapper.Object, mockUnit.Object, mockCurrentUserDTO.Object);
             var mockUserService = new Mock<UserServiceInterface>();
 
-            mockUserService.Setup(x => x.GetAllPetSitters().Returns(null)); #HERE
+            var mockData = new List<PetSitterDetailsModel>() {};
+            mockData.Add(new PetSitterDetailsModel()
+            {
+                Id = Guid.Parse("1203d8a6-114a-48ab-8d6e-30bed4671525"),
+            });
+            mockUserService.Setup(x => x.GetAllPetSitters())
+                .ReturnsAsync(mockData); 
 
             var controller = new UserController(mockDependencies.Object, mockUserService.Object, mockConfiguration.Object, mockClient.Object);
 
