@@ -90,7 +90,6 @@ const Explore = () => {
   
           
       } catch (error) {
-          console.log("AICI", error);
       }
       
     };

@@ -242,14 +242,50 @@ function RootNavigator() {
 }
 
 const MainNavigation = () => {
-     const authenticated = useSelector(isUserAuthenticatedSelector);
-  // const authenticated = true;
-  //const authenticated = false;
+    // const authenticated = useSelector(isUserAuthenticatedSelector);
+  //const authenticated = true;
+  const authenticated = false;
   return (
     <NavigationContainer>
+      {!authenticated ? (
         <RootNavigator />
+      ) : (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen
+            name='MapBase'
+            options={{ headerShown: false }}
+            component={BottomNav}
+          />
+          <Stack.Screen
+            name='SplashScreen'
+            options={{ headerShown: false }}
+            component={SplashScreen}
+          />
+          <Stack.Screen
+            name='Product'
+            component={Product}
+            options={{
+              headerShown: false,
+              ...TransitionPresets.ModalSlideFromBottomIOS,
+            }}
+          />
+          {/* add your another screen here using -> Stack.Screen */}
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
+};
+
+const mapStateToProps = (state) => {
+  return {};
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch,
+    setToken: (email, token, expiration) => {
+      dispatch(actionCreators.setToken(email, token, expiration));
+    },
+  };
 };
 
 export { MainNavigation };

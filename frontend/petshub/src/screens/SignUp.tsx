@@ -99,8 +99,6 @@ const SignUp = ({ navigation, setToken }: any) => {
           photo: user?.picture,
         });
       } catch (error) {
-        console.log('aici vine eroarea');
-        console.log(error);
         setIsInvalid(true);
       }
     }

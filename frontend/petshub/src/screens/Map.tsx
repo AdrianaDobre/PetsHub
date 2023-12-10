@@ -36,31 +36,40 @@ const Map = ({}) => {
 });
 
 useEffect(() => {
-  console.log('useeffect')
   const getProducts = async () => {
-    try {
+    // try {
       
-        const response = await fetch(
-            `http://${NETWORK_IP}:7262/Product/getProductsOnMap`,
-            {
-              method: "GET",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-            }
-        );
-        if(response.ok){
-          const data = await response.json();
+    //     const response = await fetch(
+    //         `http://${NETWORK_IP}:7262/Product/getProductsOnMap`,
+    //         {
+    //           method: "GET",
+    //                     headers: {
+    //                         Authorization: `Bearer ${token}`,
+    //                     },
+    //         }
+    //     );
+    //     if(response.ok){
+    //       const data = await response.json();
 
        
-        setActivitiesOnMap(data.products)
-        setLocationToCenter({...locationToCenter, latitude: data.latitude, longitude: data.lonfitude})
-        }
+    //     setActivitiesOnMap(data.products)
+    //     setLocationToCenter({...locationToCenter, latitude: data.latitude, longitude: data.lonfitude})
+    //     }
 
         
-    } catch (error) {
-        console.log("AICI", error);
-    }
+    // } catch (error) {
+    // }
+
+    setActivitiesOnMap([{
+      name: "Test",
+      latitude: 45,
+      longitude: 22,
+    },
+    {
+      name: "Test2",
+      latitude: 44.52,
+      longitude: 23.12,
+    }])
 
   };
   getProducts();

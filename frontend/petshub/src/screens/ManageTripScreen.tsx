@@ -32,7 +32,6 @@ const ManageTripScreen = ({ route, navigation, token }: any) => {
             try {
                 getTripData(tripId);
             } catch (error) {
-                console.log("AICI", error);
             }
         };
 
