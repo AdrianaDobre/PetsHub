@@ -16,7 +16,7 @@ using AutoMapper;
 
 namespace BusinessLogic.Implementation.UserAccount
 {
-    public class UserService : BaseService
+    public class UserService : BaseService, UserServiceInterface
     {
         public UserService(ServiceDependencies serviceDependencies) : base(serviceDependencies)
         {

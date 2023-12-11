@@ -17,7 +17,7 @@ using Entities.Enums;
 
 namespace BusinessLogic.Implementation.ListingImp
 {
-    public class ListingService : BaseService
+    public class ListingService : BaseService, ListingServiceInterface
     {
         public ListingService(ServiceDependencies serviceDependencies) : base(serviceDependencies)
         {
