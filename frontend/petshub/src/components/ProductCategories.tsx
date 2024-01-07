@@ -9,9 +9,9 @@ import React from 'react';
 
 export const capitalize = (word) => word.charAt(0).toUpperCase() + word.slice(1);
 
-export default function ProductCategories({ tags }) {
+export default function ProductCategories({ tags, handleSelectTag, selected }) {
   const { t } = useTranslation();
-  const [selected, setSelected] = useState(undefined);
+  //const [selected, setSelected] = useState(undefined);
   const Tag = ({ tag }) => (
     // <Animated.View layout={Layout.delay(1000).springify()}>
     <Badge
@@ -26,10 +26,11 @@ export default function ProductCategories({ tags }) {
   const getRandomString = () => Math.random() * 100000;
   let key = getRandomString();
   const selectTag = (tag) => {
-    setSelected(tag);
+    handleSelectTag(tag);
+    //setSelected(tag);
     key = getRandomString();
   };
-  const showTag = (tag) => (!selected ? true : selected === tag);
+  const showTag = (tag) => {console.log(selected, tag); return (!selected ? true : selected.name === tag.name)};
   //   const animatedStyles = useAnimatedStyle(() => {
   //     return {
   //       display: 'flex',
@@ -50,7 +51,7 @@ export default function ProductCategories({ tags }) {
             bg='gray.200'
             size='25px'
             borderRadius='full'
-            onPress={(e) => selectTag(undefined)}
+            onPress={(e) => {selectTag(undefined)}}
             _icon={{
               as: <AntDesign name='close' size={24} color='black' />,
             }}
@@ -61,7 +62,7 @@ export default function ProductCategories({ tags }) {
             showTag(tag) && (
               <Pressable
                 key={`badge-${tag.name}`}
-                onPress={() => selectTag(tag)}
+                onPress={() =>  {selectTag(tag); }}
               >
                 <Tag tag={tag} />
               </Pressable>

@@ -83,7 +83,11 @@ namespace BusinessLogic.Implementation.UserAccount
 
         public async Task<List<PetSitterDetailsModel>> GetAllPetSitters()
         {
-            return await Mapper.ProjectTo<PetSitterDetailsModel>(UnitOfWork.Listings.Get().Include(l => l.CreatorUser).Where(l => l.Type == false)).ToListAsync();
+            return await Mapper.ProjectTo<PetSitterDetailsModel>(UnitOfWork.Listings.Get()
+                .Include(l => l.CreatorUser)
+                .Include(l => l.Pet)
+                .Where(l => l.Type == false && CurrentUser.Id != l.CreatorUserId))
+                .ToListAsync();
         }
 
         public async Task<UserProfileModel> GetUserProfile()

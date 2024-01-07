@@ -30,11 +30,12 @@ namespace BusinessLogic.Implementation.ListingImp
                 Id = Guid.NewGuid(),
                 CreatorUserId = CurrentUser.Id,
                 AcceptedUserId = null,
-                PetId = model.PetId,
+                PetId = (short)model.PetId,
                 Description = model.Description,
                 Status = (short)StatusTypes.Posted,
                 PetPhotoId = null,
-                Date = model.Date,
+                //Date = model.Date,
+                Date = DateTime.Now,
                 Price = model.Price,
                 Time = model.Time,
                 Type = false,
@@ -51,7 +52,8 @@ namespace BusinessLogic.Implementation.ListingImp
             return await Mapper.ProjectTo<OfferModel>(UnitOfWork.Listings.Get()
                 .Include(l => l.CreatorUser)
                 .Include(l => l.Pet)
-                .Where(l => l.Type == false && l.Status == (short)StatusTypes.Posted && l.CreatorUserId != CurrentUser.Id && l.Date > DateTime.Today))
+                .Where(l => l.Type == false && l.Status == (short)StatusTypes.Posted && l.CreatorUserId != CurrentUser.Id))
+                .OrderBy(l => l.Date)
                 .ToListAsync();
         }
 
@@ -103,7 +105,7 @@ namespace BusinessLogic.Implementation.ListingImp
             return await Mapper.ProjectTo<RequestModel>(UnitOfWork.Listings.Get()
                 .Include(l => l.AcceptedUser)
                 .Include(l => l.Pet)
-                .Where(l => l.Type == false && l.Status == (short)StatusTypes.RequestSent && l.CreatorUserId == CurrentUser.Id))
+                .Where(l => l.Type == false && l.Status != (short)StatusTypes.Posted && l.CreatorUserId == CurrentUser.Id))
                 .ToListAsync();
         }
 

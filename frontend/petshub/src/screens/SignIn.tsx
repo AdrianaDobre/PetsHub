@@ -109,7 +109,7 @@ const SignIn = ({ navigation, setToken }: any) => {
       email: email,
       password: password,
     };
-
+    
     const response = await fetch(`http://${NETWORK_IP}:7262/User/signin`, {
       method: 'POST',
       headers: {
@@ -143,7 +143,7 @@ const SignIn = ({ navigation, setToken }: any) => {
         <Flex mx='6' style={styles.card} mt={32}>
           <Flex alignItems='center'>
             <Heading fontSize={24} color={'rgba(79, 79, 79, 1)'}>
-              Bine ai revenit!
+              Welcome back!
             </Heading>
             <Text
               mt='2'
@@ -152,7 +152,7 @@ const SignIn = ({ navigation, setToken }: any) => {
               textAlign='center'
               maxW={'250px'}
             >
-              Vă rugăm să introduceți detaliile dvs. de conectare mai jos.
+              Please fill the form with your data account in order to connect.
             </Text>
           </Flex>
           <Flex alignItems='center' mt={100} gap='2'>
@@ -220,7 +220,7 @@ const SignIn = ({ navigation, setToken }: any) => {
                   />
                 </Pressable>
               }
-              placeholder='Parola'
+              placeholder='Password'
             />
           </Flex>
           <Flex alignItems='center' mt={'50px'}>
@@ -236,10 +236,10 @@ const SignIn = ({ navigation, setToken }: any) => {
                 bgColor: '#812A05',
               }}
             >
-              Conectare
+              Connect
             </Button>
             <Text color='rgba(151, 148, 148, 1)' mt={'40px'} fontSize={16}>
-              sau continua cu
+              or continue with
             </Text>
             <Flex direction='row' gap='8'>
               <Button
@@ -283,7 +283,7 @@ const SignIn = ({ navigation, setToken }: any) => {
         pt={2}
       >
         <Text color={'rgba(151, 148, 148, 1)'} fontSize={16}>
-          Nu ai un cont?{' '}
+          You don't have an account?{' '}
         </Text>
         <Pressable onPress={() => navigation.navigate(Routes.SIGN_UP)}>
           {({ isPressed }) => {
@@ -294,7 +294,7 @@ const SignIn = ({ navigation, setToken }: any) => {
                 fontWeight='bold'
                 underline={isPressed ? true : false}
               >
-                Inscrie-te
+                Sign up
               </Text>
             );
           }}

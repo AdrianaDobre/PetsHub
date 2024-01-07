@@ -50,7 +50,7 @@ function MapStackScreen() {
 
 function ProductAddStackScreen() {
   return (
-    <ProductAddStack.Navigator initialRouteName='AddProductImage'>
+    <ProductAddStack.Navigator initialRouteName='AddProduct'>
       <ProductAddStack.Screen
         name='AddProductImage'
         component={AddProductImage}
@@ -242,9 +242,9 @@ function RootNavigator() {
 }
 
 const MainNavigation = () => {
-    // const authenticated = useSelector(isUserAuthenticatedSelector);
+    const authenticated = useSelector(isUserAuthenticatedSelector);
   //const authenticated = true;
-  const authenticated = false;
+  // const authenticated = false;
   return (
     <NavigationContainer>
       {!authenticated ? (

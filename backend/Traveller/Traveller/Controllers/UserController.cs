@@ -18,10 +18,11 @@ namespace PetsHub.Controllers
 
     public class UserController : BaseController
     {
-        private readonly UserServiceInterface userService;
+        //private readonly UserServiceInterface userService;
+        private readonly UserService userService;
         private readonly IConfiguration _configuration;
         private readonly HttpClient Client;
-        public UserController(ControllerDependencies dependencies, UserServiceInterface userService, IConfiguration configuration, HttpClient client) : base(dependencies)
+        public UserController(ControllerDependencies dependencies, UserService userService/*UserServiceInterface userService*/, IConfiguration configuration, HttpClient client) : base(dependencies)
         {
             this.userService = userService;
             _configuration = configuration;

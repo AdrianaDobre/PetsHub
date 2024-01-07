@@ -22,11 +22,16 @@ import Routes from '../navigation/routes';
 import * as Linking from 'expo-linking';
 import SwapRequestModal from './SwapRequest';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { isUserAuthenticatedSelector } from '../selectors/auth';
+import { NETWORK_IP } from '../util/constant';
 
 const Product = ({ route }: any) => {
-  const { id, productName, photoPath, description, label, userName, phoneNumber } =
+  const { id, title, description, photoPath, price, time, petType, creatorName, phoneNumber } =
     route.params.product;
   const { t } = useTranslation();
+  const token = useSelector(isUserAuthenticatedSelector);
+ 
   const [open, setOpen] = useState(false);
 
   const navigation = useNavigation();
@@ -34,6 +39,43 @@ const Product = ({ route }: any) => {
     // make request to swap chosenProduct with route.params.product
     setOpen(!open);
   };
+
+  const request = async () => {
+    const response = await fetch(
+      `http://${NETWORK_IP}:7262/Listing/sendRequestToHost?listingId=${id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }
+    );
+
+    if(response.ok){
+      navigation.navigate(Routes.EXPLORE);
+    }
+    else{
+      console.error(response.statusText)
+    }
+  }
+
+
+
+  let petImagePath = null;
+  switch (petType.toLowerCase()) {
+    case 'dog':
+      petImagePath = require('../../assets/dog.jpg');
+      break;
+    case 'cat':
+      petImagePath = require('../../assets/cat.jpg');
+      break;
+    // Add more cases for other pet types as needed
+    default:
+      // Default image if the pet type is not recognized
+      petImagePath = require('../../assets/dog.jpg');
+      break;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <SwapRequestModal
@@ -55,17 +97,18 @@ const Product = ({ route }: any) => {
           }}
         />
         <Heading mt='2' mb='2' flexGrow='1' textAlign='center'>
-          Detalii produs
+          Offer details
         </Heading>
       </Flex>
       <Flex direction='row' justifyContent={'center'} my='2'>
         <Image
-          alt={`mini-photo-${productName}`}
+          alt={`mini-photo-${title}`}
           height='207px'
           bg='muted.200'
           borderRadius='xl'
           width='167px'
-          source={{ uri: photoPath }}
+          source={petImagePath}
+          //source={require(`../../assets/${petType.toLowerCase()}.jpg`)}
         />
       </Flex>
       <Flex
@@ -84,15 +127,15 @@ const Product = ({ route }: any) => {
           fontSize='2xl'
           mt='1'
         >
-          {productName}
+          {title}
         </Text>
         <Box mt='3' alignSelf={'flex-start'}>
           <Badge
-            bg={'#F5DAAB'}
+            bg={'#598C58'}
             _text={{ color: 'lightText', fontSize: 'md' }}
             borderRadius='2xl'
           >
-            {capitalize(label)}
+            {`${price} RON / ${time} hour(s)`}
           </Badge>
         </Box>
 
@@ -105,7 +148,7 @@ const Product = ({ route }: any) => {
               uri: 'https://bit.ly/broken-link',
             }}
           >
-            RS
+            {`${creatorName.split(' ')[0][0]}${creatorName.split(' ')[1][0]}`}
           </Avatar>
           <Text
             width='167px'
@@ -114,12 +157,12 @@ const Product = ({ route }: any) => {
             fontSize='sm'
             color='muted.400'
           >
-            {userName}
+            {creatorName}
           </Text>
         </Flex>
 
         <Heading mt='4' mb='2' fontSize={'lg'}>
-          Informatii produs
+          Offer details
         </Heading>
         <Text mt='2' color='darkText' fontSize='lg' lineHeight='sm' mt='1'>
           {description}
@@ -133,9 +176,9 @@ const Product = ({ route }: any) => {
             _pressed={{
               bgColor: '#02463D',
             }}
-            onPress={() => setOpen(!open)}
+            onPress={() =>/*/setOpen(!open)*/ request()}
           >
-            Troc
+            Request
           </Button>
           <Button
             size='lg'
@@ -147,10 +190,10 @@ const Product = ({ route }: any) => {
               bgColor: '#017561',
             }}
             onPress={() => {
-              Linking.openURL(`whatsapp://send?text=Buna! Sunt interesat de produsul ${productName} listat pe platforma Troc. M-ai putea ajuta cu mai multe detalii te rog?&phone=${phoneNumber}`)
+              Linking.openURL(`whatsapp://send?text=Hello! I am interested in letting my ${petType.toLowerCase()} at you. Can you give more details please?&phone=${phoneNumber}`)
             }}
           >
-            Discutați
+            Discuss
           </Button>
         </Flex>
       </Flex>
