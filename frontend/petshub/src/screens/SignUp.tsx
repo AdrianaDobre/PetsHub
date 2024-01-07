@@ -99,8 +99,6 @@ const SignUp = ({ navigation, setToken }: any) => {
           photo: user?.picture,
         });
       } catch (error) {
-        console.log('aici vine eroarea');
-        console.log(error);
         setIsInvalid(true);
       }
     }
@@ -170,7 +168,7 @@ const SignUp = ({ navigation, setToken }: any) => {
         <Flex mx='6' style={styles.card} mt='20'>
           <Flex alignItems='center'>
             <Heading color={'rgba(79, 79, 79, 1)'} fontSize={'24'}>
-              Creează-ți contul
+              Create an account
             </Heading>
             <Text
               w={'85%'}
@@ -179,7 +177,7 @@ const SignUp = ({ navigation, setToken }: any) => {
               color='rgba(151, 148, 148, 1)'
               fontSize={16}
             >
-              Ne bucuram ca ni te alături! Introduceți detaliile dvs. mai jos.
+              We are happy you join us! Please fill the form bellow.
             </Text>
           </Flex>
           <Flex alignItems='center' mt={12}>
@@ -198,7 +196,7 @@ const SignUp = ({ navigation, setToken }: any) => {
                     color='black'
                   />
                 }
-                placeholder='Numele complet'
+                placeholder='Full name'
               />
               <FormControl isRequired isInvalid={errors.Email.state} mt={'5'}>
                 <Input
@@ -250,7 +248,7 @@ const SignUp = ({ navigation, setToken }: any) => {
                     color='black'
                   />
                 }
-                placeholder='Număr de telefon'
+                placeholder='Phone Number'
               />
               <FormControl.ErrorMessage>
                 {errors.PhoneNumber.message}
@@ -286,7 +284,7 @@ const SignUp = ({ navigation, setToken }: any) => {
                     />
                   </Pressable>
                 }
-                placeholder='Parola'
+                placeholder='Password'
               />
               <FormControl.ErrorMessage>
                 {errors.Password.message}
@@ -314,7 +312,7 @@ const SignUp = ({ navigation, setToken }: any) => {
                   />
                 }
                 type={'password'}
-                placeholder='Confirmă parola'
+                placeholder='Confirm password'
               />
               <FormControl.ErrorMessage>
                 {errors.ConfirmedPassword.message}
@@ -335,10 +333,10 @@ const SignUp = ({ navigation, setToken }: any) => {
                 bgColor: '#812A05',
               }}
             >
-              Inscrie-te
+              Register
             </Button>
             <Text color='rgba(151, 148, 148, 1)' fontSize={16} mt={'35'}>
-              sau continua cu
+              or continue with
             </Text>
             <Flex direction='row' gap='8'>
               <Button
@@ -381,7 +379,7 @@ const SignUp = ({ navigation, setToken }: any) => {
         bgColor={'white'}
       >
         <Text color={'rgba(151, 148, 148, 1)'} fontSize={16}>
-          Ai deja un cont?{' '}
+          Do you have already an account?{' '}
         </Text>
         <Pressable onPress={() => navigation.navigate(Routes.SIGN_IN)}>
           {({ isPressed }) => {
@@ -392,7 +390,7 @@ const SignUp = ({ navigation, setToken }: any) => {
                 fontWeight='bold'
                 underline={isPressed ? true : false}
               >
-                Conectare
+                Sign in
               </Text>
             );
           }}

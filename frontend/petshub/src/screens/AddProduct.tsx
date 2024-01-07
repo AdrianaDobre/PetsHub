@@ -21,30 +21,26 @@ import Routes from '../navigation/routes';
 import { ScrollView } from 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
+import { NETWORK_IP } from '../util/constant';
+import { isUserAuthenticatedSelector } from '../selectors/auth';
 // import { addToy, toysSlice } from '../features/toySlice';
 // import { draft, toysSelector } from '../selectors/toy';
-const categories = [
-  { name: 'Electrocasnice', value: 'Electrocasnice' },
-  { name: 'Imbracaminte', value: 'Imbracaminte' },
+const pets = [
+  { name: 'Dog', value: '1' },
+  { name: 'Cat', value: '2' },
+  { name: 'Parrot', value: '3' },
+  { name: 'Rabbit', value: '4' },
+  { name: 'Fish', value: '5' },
+  { name: 'Hamster', value: '6' },
 ];
 
-const states = [
-  {
-    name: 'Uzata',
-    value: 'Uzata',
-  },
-  {
-    name: 'Nou',
-    value: 'Nou',
-  },
-];
 
 const initialState = {
-  name: '',
+  title: '',
   description: '',
-  label: categories[0],
-  state: states[0],
-  media: '',
+  petId: pets[0],
+  price: 0,
+  time: 0,
 };
 
 const AddProduct = ({ route }) => {
@@ -52,24 +48,43 @@ const AddProduct = ({ route }) => {
   const navigation = useNavigation();
   //   const { media } = useSelector(draft);
   //   const localDraft = useSelector(draft);
-  const dispatch = useDispatch();
+  const token = useSelector(isUserAuthenticatedSelector);
   //   const { status } = useSelector(toysSelector);
   const error = '';
   const [toyData, setToyData] = useState(initialState);
   //   if (localDraft === {}) {
   //     navigation.navigate(Routes.HOME);
   //   }
-  useEffect(() => {
-    setToyData({
-      ...toyData,
-      media: route.params?.media || '',
-    });
-    console.log('MED', route.params.media);
-  }, []);
-  const handleAddToy = () => {
-    // dispatch(addToy({ ...toyData, photo: media }));
-    setToyData(initialState);
-    navigation.navigate(Routes.EXPLORE);
+
+  const handleAddToy = async () => {
+    const model = {...toyData, petId: toyData.petId["value"]}
+    console.log(model)
+    console.log(token)
+    try{
+
+      const response = await fetch(`http://${NETWORK_IP}:7262/Listing/addPlace`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(model),
+      });
+      
+      if(response.ok){
+        navigation.navigate(Routes.EXPLORE);
+      }
+      else {
+        // Handle unsuccessful response
+        //debugger
+        
+        console.error('Error:', response.statusText);
+      }
+
+    }
+    catch (error) {
+      console.error('Fetch Error:', error);
+    }
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -94,7 +109,7 @@ const AddProduct = ({ route }) => {
           alignItems='center'
         >
           <Flex direction='row' w='100%'>
-            <Heading textAlign='center'>Adaugă produs</Heading>
+            <Heading textAlign='center'>Add a place</Heading>
           </Flex>
         </Flex>
         <Flex flex={1} position='relative'>
@@ -102,19 +117,19 @@ const AddProduct = ({ route }) => {
             <Flex mx='5' mt='6' gap='5' flex={1} mb='24'>
               <Flex gap='7'>
                 <FormControl isRequired w='100%' isInvalid={error} gap='5'>
-                  <Heading fontSize='lg'>Nume</Heading>
+                  <Heading fontSize='lg'>Title</Heading>
                   <Input
                     variant='filled'
                     borderRadius='xl'
                     size='lg'
-                    value={toyData.name}
-                    onChangeText={(name) => setToyData({ ...toyData, name })}
+                    value={toyData.title}
+                    onChangeText={(title) => setToyData({ ...toyData, title })}
                     type='text'
-                    placeholder='Nume'
+                    placeholder='Title'
                   />
                 </FormControl>
                 <FormControl isRequired w='100%' isInvalid={error} gap='5'>
-                  <Heading fontSize='lg'>Descriere</Heading>
+                  <Heading fontSize='lg'>Description</Heading>
                   <TextArea
                     bgColor='muted.100'
                     borderColor='transparent'
@@ -125,27 +140,42 @@ const AddProduct = ({ route }) => {
                     onChangeText={(description) =>
                       setToyData({ ...toyData, description })
                     }
-                    placeholder='Descriere'
+                    placeholder='Description'
                   />
                 </FormControl>
-
-                <Flex>
-                  <Heading fontSize='lg'>Categorie</Heading>
-                  <SelectInput
-                    value={toyData.label}
-                    options={categories}
-                    onSelect={(option) =>
-                      setToyData({ ...toyData, label: option })
-                    }
+                <FormControl isRequired w='100%' isInvalid={error} gap='5'>
+                  <Heading fontSize='lg'>Price (RON)</Heading>
+                  <Input
+                    variant='filled'
+                    borderRadius='xl'
+                    size='lg'
+                    keyboardType='numeric'
+                    value={toyData.price}
+                    onChangeText={(price) => setToyData({ ...toyData, price })}
+                    type='text'
+                    placeholder='Price (RON)'
                   />
-                </Flex>
+                </FormControl>
+                <FormControl isRequired w='100%' isInvalid={error} gap='5'>
+                  <Heading fontSize='lg'>Time (hours)</Heading>
+                  <Input
+                    variant='filled'
+                    borderRadius='xl'
+                    size='lg'
+                    keyboardType='numeric'
+                    value={toyData.time}
+                    onChangeText={(time) => setToyData({ ...toyData, time })}
+                    type='text'
+                    placeholder='Time (hours)'
+                  />
+                </FormControl>
                 <Flex>
-                  <Heading fontSize='lg'>Stare</Heading>
+                  <Heading fontSize='lg'>Pet</Heading>
                   <SelectInput
-                    value={toyData.state}
-                    options={states}
+                    value={toyData.petId}
+                    options={pets}
                     onSelect={(option) =>
-                      setToyData({ ...toyData, state: option })
+                      setToyData({ ...toyData, petId: option })
                     }
                   />
                 </Flex>
@@ -173,7 +203,7 @@ const AddProduct = ({ route }) => {
               borderRadius='xl'
               onPress={(e) => navigation.goBack()}
             >
-              Inapoi
+              Back
             </Button>
             <Button
               onPress={handleAddToy}
@@ -182,7 +212,7 @@ const AddProduct = ({ route }) => {
               borderRadius='xl'
               bg='#D94506'
             >
-              Adauga
+              Add
             </Button>
           </Flex>
         </Flex>

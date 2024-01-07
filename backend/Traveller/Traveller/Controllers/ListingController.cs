@@ -19,15 +19,15 @@ namespace PetsHub.Controllers
 
     public class ListingController : BaseController
     {
-        private readonly UserServiceInterface userService;
-        private readonly ListingServiceInterface listingService;
-        private readonly IConfiguration _configuration;
+        //private readonly UserServiceInterface userService;
+        //private readonly ListingServiceInterface listingService;
+        private readonly UserService userService;
+        private readonly ListingService listingService;
 
-        public ListingController(ControllerDependencies dependencies, UserServiceInterface userService, ListingServiceInterface listingService, IConfiguration configuration) : base(dependencies)
+        public ListingController(ControllerDependencies dependencies, UserService userService, ListingService listingService, IConfiguration configuration) : base(dependencies)
         {
             this.userService = userService;
             this.listingService = listingService;
-            _configuration = configuration;
         }
 
         [HttpPost("addPlace")]
@@ -53,7 +53,7 @@ namespace PetsHub.Controllers
             return Ok(offers);
         }
 
-        [HttpPut("sendRequestToHost/{listingId}")]
+        [HttpPut("sendRequestToHost")]
         [Authorize]
         public async Task<IActionResult> SendRequestToHost(Guid listingId)
         {
@@ -62,7 +62,7 @@ namespace PetsHub.Controllers
             return Ok();
         }
 
-        [HttpPut("acceptOrRejectRequest/{listingId}/{accepted}")]
+        [HttpPut("acceptOrRejectRequest")]
         [Authorize]
         public async Task<IActionResult> AcceptOrRejectRequest(Guid listingId, bool accepted)
         {

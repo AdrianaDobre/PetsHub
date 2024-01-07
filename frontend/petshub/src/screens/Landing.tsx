@@ -20,7 +20,7 @@ const Landing = () => {
             alt='alt'
             height='450'
             width='400'
-            source={require('../../assets/box2.png')}
+            source={require('../../assets/pet4.png')}
           />
         </Box>
         <Heading
@@ -32,7 +32,7 @@ const Landing = () => {
           opacity='90'
           w='75%'
         >
-          Troc
+          PetsHub
         </Heading>
         <Heading
           mb='34'
@@ -42,7 +42,7 @@ const Landing = () => {
           opacity='90'
           w='75%'
         >
-          Vă ajutăm să faceți alegeri înțelepte și sustenabile.
+          Bringing tails and caregivers together, effortlessly.
         </Heading>
         <Button
           size='lg'
@@ -54,7 +54,7 @@ const Landing = () => {
           }}
           onPress={() => navigation.navigate(Routes.SIGN_IN)}
         >
-          Începe
+          Start
         </Button>
       </Center>
     </View>

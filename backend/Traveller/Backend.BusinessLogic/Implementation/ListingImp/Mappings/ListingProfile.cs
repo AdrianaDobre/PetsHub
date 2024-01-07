@@ -16,10 +16,13 @@ namespace BusinessLogic.Implementation.ListingImp.Mappings
         public ListingProfile() 
         {
             CreateMap<Listing, OfferModel>()
+                    .ForMember(a => a.PhoneNumber, a => a.MapFrom(s => s.CreatorUser.PhoneNumber))
                     .ForMember(a => a.CreatorName, a => a.MapFrom(s => s.CreatorUser.Name))
                     .ForMember(a => a.PetType, a => a.MapFrom(s => s.Pet.Pet1));
 
             CreateMap<Listing, RequestModel>()
+                    .ForMember(a => a.PhoneNumber, a=> a.MapFrom(s => s.AcceptedUser.PhoneNumber))
+                    .ForMember(a => a.Status, a => a.MapFrom(s => s.Status))
                     .ForMember(a => a.AcceptedUserName, a => a.MapFrom(s => s.AcceptedUser.Name))
                     .ForMember(a => a.PetType, a => a.MapFrom(s => s.Pet.Pet1));
 
@@ -38,11 +41,13 @@ namespace BusinessLogic.Implementation.ListingImp.Mappings
 
             CreateMap<Listing, PetSitterDetailsModel>()
                     .ForMember(a => a.Id, a => a.MapFrom(s => s.CreatorUser.Id))
+                    .ForMember(a => a.PhoneNumber, a => a.MapFrom(s => s.CreatorUser.PhoneNumber))
+                    .ForMember(a => a.ListingId, a => a.MapFrom(s => s.Id))
                     .ForMember(a => a.Name, a => a.MapFrom(s => s.CreatorUser.Name))
                     .ForMember(a => a.LocationName, a => a.MapFrom(s => s.CreatorUser.LocationName))
                     .ForMember(a => a.LocationLatitude, a => a.MapFrom(s => s.CreatorUser.LocationLatitude))
+                    .ForMember(a => a.PetType, a => a.MapFrom(s => s.Pet.Pet1))
                     .ForMember(a => a.LocationLongitude, a => a.MapFrom(s => s.CreatorUser.LocationLongitude));
-
         }
     }
 }

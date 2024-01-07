@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Flex, IconButton, Text, Heading } from 'native-base';
 import { StyleSheet } from 'react-native';
 import { FlatList } from 'native-base';
 import TrocView from '../components/TrocView';
+import { NETWORK_IP } from '../util/constant';
+import { useSelector } from 'react-redux';
+import { isUserAuthenticatedSelector } from '../selectors/auth';
 
 const products = [
   {
@@ -44,26 +47,50 @@ const myNotifications = [
 ];
 
 const Notifications = () => {
+  const [requests, setRequest] = useState([]);
+  const token = useSelector(isUserAuthenticatedSelector);
+
+  useEffect(() => {
+    const getRequests = async () => {
+      const response = await fetch(
+        `http://${NETWORK_IP}:7262/Listing/viewRequestsReceived`,
+        {
+          method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+        }
+    );
+    if(response.ok){
+      const data = await response.json();
+      console.log(data)
+      setRequest(data);
+      }
+    }
+    getRequests();
+  }, [])
+
+
   const renderItem = ({ item, index }) => {
-    return <TrocView key={`troc-${index}`} troc={item} />;
+    return <TrocView key={`troc-${index}`} troc={{...item, photoPath: item.petType.toLowerCase()}} />;
   };
   return (
     <SafeAreaView style={styles.container}>
       <Flex mt='3' mx='2'>
         <Heading mt='2' mb='8' flexGrow='1' textAlign='center'>
-          Trocuri
+          My requests
         </Heading>
         <Flex mx='6' mb='1' direction='row' justifyContent={'space-between'}>
           <Text color='gray.400' fontSize='md'>
-            Produsele mele
+            Pets
           </Text>
           <Text color='gray.400' fontSize='md'>
-            Oferte
+            Offers
           </Text>
         </Flex>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={myNotifications}
+          data={requests}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />

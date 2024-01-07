@@ -6,7 +6,7 @@ export default function ProductList({ products }) {
   return (
     <Flex direction='row' gap='3' wrap='wrap' justifyContent='center'>
       {products.map((product) => (
-        <ProductMiniView product={product} key={product.productId}></ProductMiniView>
+        <ProductMiniView product={{...product, photoPath: `../../assets/${product.petType.toLowerCase()}.jpg`}} key={product.id}></ProductMiniView>
       ))}
     </Flex>
   );

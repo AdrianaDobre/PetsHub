@@ -19,5 +19,7 @@ namespace BusinessLogic.Implementation.ListingImp.Models
         public decimal Price { get; set; }
         public int Time { get; set; }
         public string Title { get; set; }
+        public string PhoneNumber { get; set; }
+        public int Status { get; set; }
     }
 }

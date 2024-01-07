@@ -66,13 +66,16 @@ const Explore = () => {
   const token = useSelector(isUserAuthenticatedSelector);
   const dispatch = useDispatch();
   const [foundToys, setFoundToys] = useState([]);
+  const [actualToys, setActualToys] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTag, setSelectedTag] = useState(undefined);
+
   useEffect(() => {
     const getProducts = async () => {
       try {
         
           const response = await fetch(
-              `http://${NETWORK_IP}:7262/Product/getAll`,
+              `http://${NETWORK_IP}:7262/Listing/listOffers`,
               {
                 method: "GET",
                           headers: {
@@ -84,13 +87,13 @@ const Explore = () => {
             const data = await response.json();
             console.log(data)
             setFoundToys(data);
+            setActualToys(data);
          
          
           }
   
           
       } catch (error) {
-          console.log("AICI", error);
       }
       
     };
@@ -104,25 +107,36 @@ const Explore = () => {
     filters,
     products,
   }: any) => {
-    console.log(2)
-    console.log(products);
-    return products?.filter((p) => p.productName.toLowerCase().includes(search.toLowerCase()));
+    return products?.filter((p) => p.creatorName.toLowerCase().includes(search.toLowerCase()));
   }; 
 
   const handleSearch = (text) => {
     setSearchQuery(text);
     const searchToys =  searchAndFilterProducts({ search: text, filters: [], products: foundToys });
-    setFoundToys(
+    setActualToys(
      searchToys
     );
   };
+
+  const handleSelectTag = (tag) => {
+    setSelectedTag(tag)
+    if(tag == undefined){
+      setActualToys(foundToys);
+    }
+    else{
+      const toys = actualToys?.filter((p) => p.petType === tag.name);
+      console.log(toys)
+      setActualToys(toys);
+    }
+  }
+
   const mainTags = [
-    { name: 'Electronice', color: '#b7b5fe' },
-    { name: 'Divertisment', color: '#9cd3a9' },
-    { name: 'Imbracaminte', color: 'yellow.400' },
-    { name: 'Carti&Jucarii', color: 'blue.400' },
-    { name: 'Casa', color: 'green.400' },
-    { name: 'Agro', color: 'purple.400' },
+    { name: 'Dog', color: '#b7b5fe' },
+    { name: 'Cat', color: '#9cd3a9' },
+    { name: 'Parrot', color: 'yellow.400' },
+    { name: 'Fish', color: 'blue.400' },
+    { name: 'Hamster', color: 'green.400' },
+    { name: 'Rabbit', color: 'purple.400' },
   ];
 
   return (
@@ -138,7 +152,7 @@ const Explore = () => {
               mb='12'
               justifyContent='center'
             >
-              <Heading textAlign='center'>Explorează</Heading>
+              <Heading textAlign='center'>Explore</Heading>
             </Flex>
             <Flex width='100%' gap='2' direction='row' justifyContent='center'>
               <Input
@@ -148,7 +162,7 @@ const Explore = () => {
                 variant='filled'
                 value={searchQuery}
                 onChangeText={(text) => handleSearch(text)}
-                placeholder='Caută produse'
+                placeholder='Search person...'
                 InputLeftElement={
                   <Box ml='4'>
                     <Icon
@@ -171,9 +185,9 @@ const Explore = () => {
               />
             </Flex>
             <Flex mb='10' ml='6' mt='8'>
-              <ProductCategories tags={mainTags} />
+              <ProductCategories tags={mainTags} handleSelectTag={handleSelectTag} selected={selectedTag}/>
             </Flex>
-            {foundToys?.length && <ProductList products={foundToys} />}
+            {actualToys?.length && <ProductList products={actualToys} />}
           </Flex>
         </ScrollView>
       </GestureHandlerRootView>
